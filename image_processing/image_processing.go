@@ -10,18 +10,19 @@ import (
 	"github.com/nfnt/resize"
 )
 
+// Added error handling to the image processing functions
 func ReadImage(path string) image.Image {
 	inputFile, err := os.Open(path)
 	if err != nil {
-		panic(err)
+		fmt.Fprintf(os.Stderr, "Error opening image %s: %v\n", path, err)
+		return nil
 	}
 	defer inputFile.Close()
 
-	// Decode the image
 	img, _, err := image.Decode(inputFile)
 	if err != nil {
-		fmt.Println(path)
-		panic(err)
+		fmt.Fprintf(os.Stderr, "Error decoding image %s: %v\n", path, err)
+		return nil
 	}
 	return img
 }
